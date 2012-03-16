@@ -1,3 +1,3 @@
 print 'Content-Type: text/plain'
 print ''
-print 'Hello, world! Sridhar ... sridhar... sridhar'
+print 'Hello, world! Sridhar -> Rishi ... sridhar -> Rishi... sridhar -> Rishi'
