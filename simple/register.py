@@ -44,8 +44,8 @@ class Register(webapp.RequestHandler):
     mobile = self.request.get('mobile')
     logging.info("Mobile: %s, User Agent: %s" % (mobile, self.request.user_agent))
     self.response.headers['Content-Type'] = 'text/html'
-    if not bool(RE_MOBILE_NUMBER.search(mobile)):
-      path = os.path.join(os.path.dirname(__file__), "registration_fail.html")
-    else:
+    if bool(RE_MOBILE_NUMBER.search(mobile)) and len(mobile) == 10:
       path = os.path.join(os.path.dirname(__file__), "registration_done.html")
+    else:
+      path = os.path.join(os.path.dirname(__file__), "registration_fail.html")
     self.response.out.write(template.render(path, {'mobile' : mobile}))
