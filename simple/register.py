@@ -1,11 +1,14 @@
-import re
 import logging
+import os
+import re
+from google.appengine.ext.webapp import template
 from google.appengine.ext import webapp
 
 # Some mobile browsers which look like desktop browsers.
 RE_MOBILE = re.compile(r"(iphone|ipod|blackberry|android|palm|symbian|windows\s+ce)", re.I)
 RE_DESKTOP = re.compile(r"(windows|linux|os\s+[x9]|solaris|bsd)", re.I)
 RE_BOT = re.compile(r"(spider|crawl|slurp|bot)", re.I)
+RE_MOBILE_NUMBER = re.compile(r"[0-9]{10}", re.I)
 
 
 class Register(webapp.RequestHandler):
@@ -33,9 +36,16 @@ class Register(webapp.RequestHandler):
       logging.info("Desktop User Agent: %s", user_agent)
     else:
       logging.info("Mobile User Agent: %s", user_agent)
-    self.response.out.write('<form method="post">Mobile: <input name="mobile"><br/><input type="submit" value="OK"></form>')
+    self.response.headers['Content-Type'] = 'text/html'
+    path = os.path.join(os.path.dirname(__file__), "registration_form.html")
+    self.response.out.write(template.render(path, {}))
 
   def post(self):
     mobile = self.request.get('mobile')
     logging.info("Mobile: %s, User Agent: %s" % (mobile, self.request.user_agent))
-    self.response.out.write("Thank You, Your Mobile No. %s is registered. You will get SMS." % mobile)
+    self.response.headers['Content-Type'] = 'text/html'
+    if not bool(RE_MOBILE_NUMBER.search(mobile)):
+      path = os.path.join(os.path.dirname(__file__), "registration_fail.html")
+    else:
+      path = os.path.join(os.path.dirname(__file__), "registration_done.html")
+    self.response.out.write(template.render(path, {'mobile' : mobile}))

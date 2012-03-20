@@ -4,5 +4,9 @@ runtime: python
 api_version: 1
 
 handlers:
+- url: /(.*\.png)
+  static_files: static/images/\1
+  upload: static/images/(.*\.png)
+
 - url: /.*
   script: main.py
