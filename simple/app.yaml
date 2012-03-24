@@ -4,6 +4,37 @@ runtime: python
 api_version: 1
 
 handlers:
+- url: /stylesheets
+  static_dir: stylesheets
+  mime_type: text/css
+  
+- url: /(.*\.html)
+  static_files: static/\1
+  upload: static/(.*\.html)
+  mime_type: text/html
+
+- url: /javascript
+  static_dir: javascript
+  mime_type: text/javascript
+
+- url: /(.*\.gif)
+  static_files: static/images/\1
+  upload: static/images/(.*\.gif)
+
+- url: /(.*\.mf)
+  static_files: static/\1
+  upload: static/(.*\.mf)
+  mime_type: text/cache-manifest
+  expiration: "0s"
+
+- url: /(.*\.mp3)
+  static_files: static/audio/\1
+  upload: static/audio/(.*\.mp3)
+
+- url: /(.*\.jpg)
+  static_files: static/images/\1
+  upload: static/images/(.*\.jpg)
+
 - url: /(.*\.png)
   static_files: static/images/\1
   upload: static/images/(.*\.png)
