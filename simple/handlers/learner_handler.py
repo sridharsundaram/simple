@@ -1,5 +1,6 @@
 from base.form_handler import FormHandler
 from datamodel.learner import Learner
+from google.appengine.ext import db
 
 class LearnerHandler(FormHandler):
   html_form = 'html/learner.html'
@@ -8,10 +9,16 @@ class LearnerHandler(FormHandler):
 
   def get(self):
     key = self.request.params.get('_key')
+    learner = None
     if key:
       learner = Learner.retrieve(Learner, key)
-    else:
+    elif self.request.params.get(Learner.id_field):
+      idval = self.request.params.get(Learner.id_field)
+      learner = Learner.all().filter("MoblieNumber = ", idval).fetch(1)
+    if not learner:
       learner = Learner()
+      if idval:
+        learner.MobileNumber = db.PhoneNumber(idval)
       
     self.template_values = {
       'learner' : learner,
@@ -27,12 +34,6 @@ class LearnerHandler(FormHandler):
     if key:
       if action == 'Delete':
         learner.delete()
-      else:
-        pass
-        """for variable in Variable.all().ancestor(template):
-          type = self.request.params.get(variable.name)
-          variable.setDomain(Domain.defaultDomain(Domain.externalToInternalType(type)))
-          variable.put() """
     else:
       pass
     self.render(learner)
