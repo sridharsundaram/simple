@@ -1,9 +1,12 @@
 from google.appengine.ext import webapp
 from google.appengine.ext.webapp.util import run_wsgi_app
-from register import Register
+from handlers.register_handler import RegisterHandler
+from handlers.learner_handler import LearnerHandler
 
 application = webapp.WSGIApplication(
-                                     [('/', Register)],
+                                     [('/', RegisterHandler),
+                                      ('/learner', LearnerHandler)
+                                    ],
                                      debug=True)
 
 def main():

@@ -11,7 +11,7 @@ RE_BOT = re.compile(r"(spider|crawl|slurp|bot)", re.I)
 RE_MOBILE_NUMBER = re.compile(r"[0-9]{10}", re.I)
 
 
-class Register(webapp.RequestHandler):
+class RegisterHandler(webapp.RequestHandler):
           
   def is_desktop(self, user_agent):
     """
@@ -44,7 +44,7 @@ class Register(webapp.RequestHandler):
     mobile = self.request.get('mobile')
     logging.info("Mobile: %s, User Agent: %s" % (mobile, self.request.user_agent))
     self.response.headers['Content-Type'] = 'text/html'
-    if bool(RE_MOBILE_NUMBER.search(mobile)) and len(mobile) == 10:
+    if bool(RE_MOBILE_NUMBER.search(mobile)) and len(mobile) == 10 and mobile != '9876543210':
       path = os.path.join(os.path.dirname(__file__), "registration_done.html")
     else:
       path = os.path.join(os.path.dirname(__file__), "registration_fail.html")
