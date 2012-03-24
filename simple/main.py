@@ -7,11 +7,12 @@ from handlers.malldata import MallData
 from handlers.officedata import OfficeData
 
 application = webapp.WSGIApplication(
-                                     [('/', RegisterHandler),
+                                     [
+                                      (r'/([0-9]{10})', HomeHandler),
+                                      ('/', RegisterHandler),
                                       ('/learner', LearnerHandler),
                                       ('/mall.data', MallData),
                                       ('/office.data', OfficeData),
-                                      ('/home', HomeHandler),
                                     ],
                                      debug=True)
 

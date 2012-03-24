@@ -1,6 +1,5 @@
 from google.appengine.ext import db
 from base.formdb import Formdb
-from base.formdb import ChoiceProperty
 
 """
 Learner: Name, MobileNumber, MobileDevice, UserAgent, MotherTongue, Sex, Age, Education, Profession, Status, JoinDate
@@ -8,8 +7,8 @@ Learner: Name, MobileNumber, MobileDevice, UserAgent, MotherTongue, Sex, Age, Ed
 class Learner(Formdb):
   id_field = 'MobileNumber'
   Name = db.StringProperty()
-  MotherTongue = db.IntegerProperty() # ChoiceProperty([(0, None), (1, 'hindi'), (2, 'kannada')])
-  MobileNumber = db.PhoneNumberProperty()
+  MotherTongue = db.IntegerProperty() # choices = Set('hindi', 'kannada')
+  MobileNumber = db.PhoneNumberProperty() # primary key
   MobileDevice = db.StringProperty()
   UserAgent = db.StringProperty()
   Sex = db.BooleanProperty()

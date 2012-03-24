@@ -9,12 +9,13 @@ class LearnerHandler(FormHandler):
 
   def get(self):
     key = self.request.params.get('_key')
+    idval = self.request.params.get(Learner.id_field)
     learner = None
     if key:
       learner = Learner.retrieve(Learner, key)
-    elif self.request.params.get(Learner.id_field):
-      idval = self.request.params.get(Learner.id_field)
-      learner = Learner.all().filter("MoblieNumber = ", idval).fetch(1)
+    elif idval:
+      learner = Learner.retrieve(Learner, idval)
+
     if not learner:
       learner = Learner()
       if idval:

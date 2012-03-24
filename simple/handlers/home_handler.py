@@ -6,11 +6,9 @@ class HomeHandler(FormHandler):
   authorize = False
   cls = Learner
 
-  def get(self):
-    key = self.request.params.get('id')
-    if key:
-      learner = Learner.retrieve(Learner, key)
-    else:
+  def get(self, mobile_number):
+    learner = Learner.retrieve(Learner, mobile_number)
+    if not learner:
       self.redirect('/') # redirect to registration.
       
     self.template_values = {
