@@ -1,0 +1,19 @@
+1. Registration - register.py, registration_done.html, registration_fail.html
+
+2. Lesson 1 - delivered on m.mazalearn.com/<mobilenumber>
+choice between mall episode and interview episode - note which one is chosen.
+each episode has 10 pictures with audio followed by multiple choice exercise.
+
+Track 
+number of clicks on each picture.
+multiple choice question and answer clicks - wrong and right
+score 100 - provide some reward.
+start with 2 choices per question and increase to 4 on reaching 100 score.
+if getting perfect score, suggest coming back for more advanced lesson later.
+
+home page to present personalized information and top level menu
+name, level, device, mother tongue
+promo for android if not android.
+instructions in <mother tongue> - internet connection, viral growth, conference calls
+
+Learner: MobileNumber, MobileDevice, UserAgent, Sex, Age, Education, Profession, Status, JoinDate

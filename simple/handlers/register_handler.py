@@ -37,7 +37,7 @@ class RegisterHandler(webapp.RequestHandler):
     else:
       logging.info("Mobile User Agent: %s", user_agent)
     self.response.headers['Content-Type'] = 'text/html'
-    path = os.path.join(os.path.dirname(__file__), "registration_form.html")
+    path = os.path.join(os.path.dirname(__file__), "../registration_form.html")
     self.response.out.write(template.render(path, {}))
 
   def post(self):
@@ -45,7 +45,7 @@ class RegisterHandler(webapp.RequestHandler):
     logging.info("Mobile: %s, User Agent: %s" % (mobile, self.request.user_agent))
     self.response.headers['Content-Type'] = 'text/html'
     if bool(RE_MOBILE_NUMBER.search(mobile)) and len(mobile) == 10 and mobile != '9876543210':
-      path = os.path.join(os.path.dirname(__file__), "registration_done.html")
+      path = os.path.join(os.path.dirname(__file__), "../registration_done.html")
     else:
-      path = os.path.join(os.path.dirname(__file__), "registration_fail.html")
+      path = os.path.join(os.path.dirname(__file__), "../registration_fail.html")
     self.response.out.write(template.render(path, {'mobile' : mobile}))
