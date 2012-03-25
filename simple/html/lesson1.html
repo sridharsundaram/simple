@@ -1,0 +1,115 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html manifest="/lesson1.mf">
+  <head>
+    <title>Home</title>
+    <script type="text/javascript" src="javascript/random.js"></script>
+    <script type="text/javascript" src="javascript/mazaa.js"></script>
+    <script type="text/javascript" src="javascript/lookup.js"></script>
+    <script type="text/javascript" src="javascript/util.js"></script>
+    <script type="text/javascript" src="javascript/template.js"></script>
+    <script type="text/javascript" src="javascript/template_ops.js"></script>
+    <script type="text/javascript" src="javascript/client.js"></script>
+    <link rel="stylesheet" type="text/css" href="stylesheets/mazaa.css">
+    <script type="text/javascript">
+      var templateManager = null;
+      function hideElement(id) {
+        var e = document.getElementById(id);
+        if (e) e.style.display = 'none';
+      }
+      
+      function showElement(id) {
+        var e = document.getElementById(id);
+        if (e) e.style.display = '';
+      }
+      
+      function prepareLesson(jsonData) {
+        if (!templateManager) {
+          templateManager = new TemplateManager();
+        } 
+        templateManager.applyTemplate(jsonData);
+      }
+
+      function showResult(success) {
+        if (success) {
+          mazaa.playAudio(makeAbsoluteUrl('success.mp3'));
+          setTimeout(preparePractice, 1000);
+        } else { // failure
+          mazaa.playAudio(makeAbsoluteUrl('failure.mp3'));
+        }
+      }
+      
+      function showMain() {
+        hideElement('section');
+        hideElement('practice');
+        showElement('main');
+      }
+      
+      function changeSection(opt_name) {
+        hideElement('main');
+        showElement('section');
+        hideElement('practice');
+        if (opt_name) {
+          jsonData['current'] = jsonData.lesson.section[opt_name == 'Mall' ? 0 : 1];
+        }
+        prepareLesson(jsonData);
+      }
+      
+      function preparePractice() {
+        if (!templateManager) {
+          templateManager = new TemplateManager();
+        }
+        jsonData['practice'] = createQuestions(jsonData['current'].list, 1, NUM_ANSWER_CHOICES);
+        templateManager.applyTemplate(jsonData);
+        hideElement('main');
+        hideElement('section');
+        showElement('practice');
+        mazaa.playAudio(makeAbsoluteUrl(jsonData['practice'][0].question));
+      }
+    </script>
+  </head>
+  <body>
+    <h1>Maza Learn English</h1>
+    <table id="personal" data-bind-id="learner">
+      <tr><td>Mobile: {{MobileNumber}}</td></tr>
+    </table>
+    <div data-bind-id="lesson">
+    <div id="main">
+    <div id="menu" data-bind-id="section">
+      <a href="javascript:void(0);" onclick="mazaa.playAudio(makeAbsoluteUrl('{{sound}}')); changeSection('{{name}}'); return true;">
+           <img src="{{img}}" title="{{name}}" width=200>
+      </a>
+    </div>
+    </div>
+ 
+    <div id="section" data-bind-id="current" style="display:none">    
+      <h4>{{name}}</h4>
+      <input type="button" value="Back" onclick="showMain();">
+      <div id="scene" class="album">
+        <div data-bind-id="list" class="img">
+           <img height=100 width=100 xbl2:src="{{answer}}" 
+                onclick="mazaa.playAudio(makeAbsoluteUrl('{{question}}'))">
+        </div>
+      </div>
+      <input type="button" value="Practice" onclick="preparePractice();">
+    </div>  
+    
+    <div id="practice" style="display:none">
+      <h4>Practice</h4>
+      <input type="button" value="Back" onclick="changeSection();">
+      <div id="scene1" class="album" data-bind-id="practice">
+        <div>
+          <img src='sound_icon.jpg' id="testSoundIcon" height="50" width="50" 
+               onclick="mazaa.playAudio(makeAbsoluteUrl('{{question}}'))">
+        </div>
+        <div class="img" data-bind-id="choices">
+          <img width=100 height=100 xbl2:src="{{choice}}" onclick="showResult({{correct}});">
+        </div>
+      </div>
+    </div>
+    <script type="text/javascript">
+      var jsonData = {{JSONDATA}};
+      prepareLesson(jsonData);
+    </script>
+  </body>
+</html>

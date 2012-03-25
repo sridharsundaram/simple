@@ -1,5 +1,5 @@
 CACHE MANIFEST
-# 7 feb 2012 v0.12
+# 7 feb 2012 v0.143
 javascript/mazaa.js
 javascript/random.js
 javascript/template.js
@@ -17,9 +17,6 @@ Mall.mp3
 Office.jpg
 Office.mp3
 # Mall
-Mall.html
-mall.data
-practice-Mall.html
 ATM.jpg
 CheckoutCounter.jpg
 Cinema_Theatre.jpg
@@ -39,9 +36,6 @@ Rest_Rooms.mp3
 Security_Guard.mp3
 Shops.mp3
 # Office
-Office.html
-office.data
-practice-Office.html
 Coffee_Machine.jpg
 Cubicles.jpg
 Desktop.jpg
