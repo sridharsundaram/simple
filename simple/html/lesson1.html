@@ -13,22 +13,24 @@
     <link rel="stylesheet" type="text/css" href="stylesheets/mazaa.css">
     <script type="text/javascript">
       var templateManager = null;
-      function showResult(success) {
+      function showResult(id, success) {
         if (success) {
           mazaa.playAudio(makeAbsoluteUrl('success.mp3'));
-          setTimeout(preparePractice, 1000);
+          increment(id, IDX_CORRECT); 
+          setTimeout(displayPractice, 1000);
         } else { // failure
           mazaa.playAudio(makeAbsoluteUrl('failure.mp3'));
+          increment(id, IDX_WRONG); 
         }
       }
 
-      function showMain() {
+      function displayMain() {
         hideElement('section');
         hideElement('practice');
         showElement('main');
       }
       
-      function changeSection(opt_index) {
+      function displaySection(opt_index) {
         hideElement('main');
         showElement('section');
         hideElement('practice');
@@ -38,7 +40,7 @@
         instantiatePage(jsonData);
       }
       
-      function preparePractice() {
+      function displayPractice() {
         if (!templateManager) {
           templateManager = new TemplateManager();
         }
@@ -49,44 +51,61 @@
         showElement('practice');
         mazaa.playAudio(makeAbsoluteUrl(jsonData['practice'][0].question));
       }
+      var IDX_VIEW = 0;
+      var IDX_WRONG = 1;
+      var IDX_CORRECT = 2;
+      var tracking = {};
+      
+      function increment(id, idx) {
+        if (!tracking[id]) {
+          tracking[id] = [0, 0, 0];
+        }
+        tracking[id][idx]++;
+      }
+      
+      function updateCookie() {
+        tracking['id'] = document.getElementById('mobile').innerHTML;
+        var cookie_value = JSON.stringify(tracking);
+        createMazaCookie('maza', encodeURIComponent(cookie_value), 365);
+      }
     </script>
   </head>
   <body>
     <h1>Maza Learn English</h1>
     <table id="personal" data-bind-id="learner">
-      <tr><td>Mobile: {{MobileNumber}}</td></tr>
+      <tr><td>Mobile: <span id='mobile'>{{MobileNumber}}</span></td></tr>
     </table>
     <div data-bind-id="lesson">
     <div id="main">
     <div id="menu" data-bind-id="section">
-      <a href="javascript:void(0);" onclick="mazaa.playAudio(makeAbsoluteUrl('{{sound}}')); changeSection({{_index}}); return true;">
-           <img src="{{img}}" title="{{name}}" width=200>
+      <a href="javascript:void(0);" onclick="mazaa.playAudio(makeAbsoluteUrl('{{sound}}')); displaySection({{_index}}); return true;">
+           <img xbl2:src="{{img}}" title="{{name}}" width=200>
       </a>
     </div>
     </div>
  
     <div id="section" data-bind-id="current" style="display:none">    
       <h4>{{name}}</h4>
-      <input type="button" value="Back" onclick="showMain();">
+      <input type="button" value="Back" onclick="updateCookie(); displayMain();">
       <div id="scene" class="album">
         <div data-bind-id="list" class="img">
            <img height=100 width=100 xbl2:src="{{answer}}" 
-                onclick="mazaa.playAudio(makeAbsoluteUrl('{{question}}'))">
+                onclick="increment({{id}}, IDX_VIEW); mazaa.playAudio(makeAbsoluteUrl('{{question}}'))">
         </div>
       </div>
-      <input type="button" value="Practice" onclick="preparePractice();">
+      <input type="button" value="Practice" onclick="displayPractice();">
     </div>  
     
     <div id="practice" style="display:none">
       <h4>Practice</h4>
-      <input type="button" value="Back" onclick="changeSection();">
+      <input type="button" value="Back" onclick="updateCookie(); displaySection();">
       <div id="scene1" class="album" data-bind-id="practice">
         <div>
           <img src='sound_icon.jpg' id="testSoundIcon" height="50" width="50" 
                onclick="mazaa.playAudio(makeAbsoluteUrl('{{question}}'))">
         </div>
         <div class="img" data-bind-id="choices">
-          <img width=100 height=100 xbl2:src="{{choice}}" onclick="showResult({{correct}});">
+          <img width=100 height=100 xbl2:src="{{choice}}" onclick="showResult({{id}}, {{correct}});">
         </div>
       </div>
     </div>

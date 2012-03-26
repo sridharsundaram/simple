@@ -1,4 +1,3 @@
-from base.form_handler import FormHandler
 from datamodel.learner import Learner
 from datamodel.lesson1data import Lesson1Data
 from google.appengine.ext import webapp

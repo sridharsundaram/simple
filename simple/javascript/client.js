@@ -102,17 +102,18 @@ var pageLoadState = DATA_REFRESH_START;
 // Cookie handling methods
 // //////////////////////////////////////////////////////////////////////////
 
-function createCookie(name, value, days) {
+function createMazaCookie(name, value, days) {
   if (days) {
     var date = new Date();
     date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
     var expires = '; expires=' + date.toGMTString();
   }
   else var expires = '';
-  document.cookie = name + '=' + value + expires + '; ';
+  var path = '/';
+  document.cookie = name + '=' + value + expires + '; path=' + path;
 }
 
-function readCookie(name) {
+function readMazaCookie(name) {
   var nameEQ = name + '=';
   var ca = document.cookie.split(';');
   for (var i = 0; i < ca.length; i++) {
@@ -123,8 +124,8 @@ function readCookie(name) {
   return null;
 }
 
-function eraseCookie(name) {
-  createCookie(name, '', -1);
+function eraseMazaCookie(name) {
+  createMazaCookie(name, '', -1);
 }
 
 

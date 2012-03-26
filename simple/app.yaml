@@ -21,7 +21,7 @@ handlers:
   static_files: static/images/\1
   upload: static/images/(.*\.gif)
 
-- url: /(.*\.mf)
+- url: /(.*\.cmf)
   static_files: static/\1
   upload: static/(.*\.mf)
   mime_type: text/cache-manifest
