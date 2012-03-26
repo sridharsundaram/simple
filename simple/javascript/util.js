@@ -166,3 +166,22 @@ function setInnerHtmlOrTextContent(element, text) {
     throw e;
   }
 }
+
+/**
+ * Hide element with id if exists in document
+ * @param id
+ */
+function hideElement(id) {
+  var e = document.getElementById(id);
+  if (e) e.style.display = 'none';
+}
+
+/**
+ * Show element with id if exists in document
+ * @param id
+ */
+function showElement(id) {
+  var e = document.getElementById(id);
+  if (e) e.style.display = '';
+}
+

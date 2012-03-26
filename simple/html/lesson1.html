@@ -13,23 +13,6 @@
     <link rel="stylesheet" type="text/css" href="stylesheets/mazaa.css">
     <script type="text/javascript">
       var templateManager = null;
-      function hideElement(id) {
-        var e = document.getElementById(id);
-        if (e) e.style.display = 'none';
-      }
-      
-      function showElement(id) {
-        var e = document.getElementById(id);
-        if (e) e.style.display = '';
-      }
-      
-      function prepareLesson(jsonData) {
-        if (!templateManager) {
-          templateManager = new TemplateManager();
-        } 
-        templateManager.applyTemplate(jsonData);
-      }
-
       function showResult(success) {
         if (success) {
           mazaa.playAudio(makeAbsoluteUrl('success.mp3'));
@@ -38,21 +21,21 @@
           mazaa.playAudio(makeAbsoluteUrl('failure.mp3'));
         }
       }
-      
+
       function showMain() {
         hideElement('section');
         hideElement('practice');
         showElement('main');
       }
       
-      function changeSection(opt_name) {
+      function changeSection(opt_index) {
         hideElement('main');
         showElement('section');
         hideElement('practice');
-        if (opt_name) {
-          jsonData['current'] = jsonData.lesson.section[opt_name == 'Mall' ? 0 : 1];
+        if (opt_index) {
+          jsonData['current'] = jsonData.lesson.section[opt_index];
         }
-        prepareLesson(jsonData);
+        instantiatePage(jsonData);
       }
       
       function preparePractice() {
@@ -76,7 +59,7 @@
     <div data-bind-id="lesson">
     <div id="main">
     <div id="menu" data-bind-id="section">
-      <a href="javascript:void(0);" onclick="mazaa.playAudio(makeAbsoluteUrl('{{sound}}')); changeSection('{{name}}'); return true;">
+      <a href="javascript:void(0);" onclick="mazaa.playAudio(makeAbsoluteUrl('{{sound}}')); changeSection({{_index}}); return true;">
            <img src="{{img}}" title="{{name}}" width=200>
       </a>
     </div>
@@ -109,7 +92,7 @@
     </div>
     <script type="text/javascript">
       var jsonData = {{JSONDATA}};
-      prepareLesson(jsonData);
+      instantiatePage(jsonData);
     </script>
   </body>
 </html>

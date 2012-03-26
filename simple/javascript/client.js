@@ -216,6 +216,16 @@ function getNestedTemplates() {
 // //////////////////////////////////////////////////////////////////////////
 
 /**
+ * Instantiate the page with the provided json
+ */
+function instantiatePage(jsonData) {
+  if (!templateManager) {
+    templateManager = new TemplateManager();
+  } 
+  templateManager.applyTemplate(jsonData);
+}
+
+/**
  * @param {String} relativeUrl - url from which to fetch data
  * @param {function} loadDataCallback - callback method to be invoked after fetch
  * @return - asynchronous. callback is is invoked with jsonData fetched

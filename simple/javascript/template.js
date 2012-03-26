@@ -33,6 +33,7 @@ var NUM_INSTANCES = 'num_instances';
 // We use () in the name to indicate built-in versus json data.
 var FIRST = "first()";
 var RANDOM = 'random()';
+var INDEX = '_index';
 
 // Regular expressions for matching out template syntax
 var reBeginDelimiter = '(?:(?:{{)|(?:%7B%7B))';
@@ -350,6 +351,7 @@ Template.prototype.instantiate =
       // Setup in the databinding if this is the first instance of the template
       // so that DATA_EXPAND_IF can use it.
       dataBinding[j][FIRST] = j == 0;
+      dataBinding[j][INDEX] = j;
       dataBinding[j][RANDOM] = (j == randomNumber);
       var idSuffixWithCount = idSuffix + '.' + j;
       this.instantiateWithBinding(dictionaryContext,  idSuffixWithCount,
@@ -418,6 +420,7 @@ Template.prototype.instantiateAndBindData =
       // Setup in the databinding if this is the first instance of the template
       // so that DATA_EXPAND_IF can use it.
       dataBinding[j][FIRST] = j == 0;
+      dataBinding[j][INDEX] = j;
       dataBinding[j][RANDOM] = j == randomNumber;
       idSuffixWithCount = idSuffix + '.' + j;
       this.reInstantiateWithBinding(dictionaryContext,  idSuffixWithCount,
