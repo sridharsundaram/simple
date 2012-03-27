@@ -3,6 +3,10 @@ import os
 import re
 from google.appengine.ext.webapp import template
 from google.appengine.ext import webapp
+from datamodel.learner import Learner
+from google.appengine.ext import db
+import simplejson
+from cookie import Cookie
 
 # Some mobile browsers which look like desktop browsers.
 RE_MOBILE = re.compile(r"(iphone|ipod|blackberry|android|palm|symbian|windows\s+ce)", re.I)
@@ -31,6 +35,11 @@ class RegisterHandler(webapp.RequestHandler):
            request.headers.get('HTTP_USER_AGENT', '')
   
   def get(self):
+    cookie, mobile, learner = Cookie.parse_maza(self.request.cookies)
+    if learner:
+      self.redirect('/' + mobile)
+      return
+    
     user_agent = self.request.user_agent
     if self.is_desktop(user_agent):
       logging.info("Desktop User Agent: %s", user_agent)
@@ -46,6 +55,16 @@ class RegisterHandler(webapp.RequestHandler):
     self.response.headers['Content-Type'] = 'text/html'
     if bool(RE_MOBILE_NUMBER.search(mobile)) and len(mobile) == 10 and mobile != '9876543210':
       path = os.path.join(os.path.dirname(__file__), "../registration_done.html")
+      learner = Learner.retrieve(Learner, mobile)
+      if not learner:
+        learner = Learner()
+        learner.MobileNumber = db.PhoneNumber(mobile)
+        learner.UserAgent = self.request.user_agent
+        learner.Channel = 'WEB'
+        learner.MotherTongue = 1 # Hindi
+        learner.Status = simplejson.dumps({'id': str(mobile)})
+        learner.put()
+        self.response.headers['Set-Cookie'] =  Cookie.get_maza_cookie_str(learner.Status)
     else:
       path = os.path.join(os.path.dirname(__file__), "../registration_fail.html")
     self.response.out.write(template.render(path, {'mobile' : mobile}))

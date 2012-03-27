@@ -3,6 +3,8 @@ from datamodel.lesson1data import Lesson1Data
 from google.appengine.ext import webapp
 import os
 import simplejson
+from cookie import Cookie
+
 
 class HomeHandler(webapp.RequestHandler):
 
@@ -18,6 +20,7 @@ class HomeHandler(webapp.RequestHandler):
     jsonDataStr = simplejson.dumps(jsonData)
     self.response.headers['Content-Type'] = 'text/html'
     self.response.headers['Cache-Control'] = 'max-age=3600'
+    self.response.headers['Set-Cookie'] =  Cookie.get_maza_cookie_str(learner.Status)
 
     filename = os.path.join(os.path.dirname(__file__), "../html/lesson1.html")
     f = open(filename, "r")

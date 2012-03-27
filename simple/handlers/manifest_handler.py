@@ -2,8 +2,7 @@ from datamodel.learner import Learner
 from datamodel.lesson1data import Lesson1Data
 from google.appengine.ext import webapp
 import os
-import simplejson
-import urllib
+from cookie import Cookie
 
 class ManifestHandler(webapp.RequestHandler):
 
@@ -12,14 +11,10 @@ class ManifestHandler(webapp.RequestHandler):
     self.response.headers['Cache-Control'] = 'max-age=0'
     
     # Retrieve tracking cookie to find stats for this user
-    cookie = urllib.unquote(self.request.cookies['maza'])
-    if cookie:
-      tracker = simplejson.loads(cookie)
-      mobile_number = tracker['id']
-      learner = Learner.retrieve(Learner, mobile_number)
-      if learner:
-        learner.Status = cookie
-        learner.put()
+    cookie, mobile, learner = Cookie.parse_maza(self.request.cookies)
+    if learner:
+      learner.Status = cookie
+      learner.put()
 
     filename = os.path.join(os.path.dirname(__file__), "../html/lesson1.mf")
     f = open(filename, "r")
