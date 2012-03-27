@@ -95,21 +95,30 @@
     </div>
  
     <div id="section" template-id="currentsection" data-bind-id="current" style="display:none">    
-      <h4>{{name}}</h4>
-      <input type="button" value="Back" onclick="updateCookie(); displayMain();">
+      <div>
+        <b>{{name}}</b>
+        <span>
+          <input type="button" value="Back" onclick="updateCookie(); displayMain();">
+          <input type="button" value="Practice" onclick="displayPractice();">
+        </span>
+      </div>
       <div id="scene" class="album">
         <div data-bind-id="list" class="img">
            <img height=100 width=100 xbl2:src="{{answer}}" 
                 onclick="increment({{id}}, IDX_VIEW); mazaa.playAudio(makeAbsoluteUrl('{{question}}'))">
         </div>
       </div>
-      <input type="button" value="Practice" onclick="displayPractice();">
+      
     </div>  
     
     <div id="practice" style="display:none">
-      <h4>Practice</h4>
-      <div>Score: <span id="score" width=100 style="background-color: yellow"></span></div>
-      <input type="button" value="Back" onclick="updateCookie(); displaySection();">
+      <div>
+        <b>Practice</b>
+        <span>
+          Score: <span id="score" width=100 style="background-color: yellow"></span>
+          <input type="button" value="Back" onclick="updateCookie(); displaySection();">
+        </span>
+      </div>
       <div id="scene1" template-id="practice" class="album" data-bind-id="practice">
         <div>
           <img src='sound_icon.jpg' id="testSoundIcon" height="50" width="50" 
