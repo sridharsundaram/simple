@@ -16,11 +16,13 @@
       function showResult(id, success) {
         if (success) {
           mazaa.playAudio(makeAbsoluteUrl('success.mp3'));
-          increment(id, IDX_CORRECT); 
+          increment(id, IDX_CORRECT);
+          increaseScore(10);
           setTimeout(displayPractice, 1000);
         } else { // failure
-          mazaa.playAudio(makeAbsoluteUrl('failure.mp3'));
+          mazaa.playAudio(makeAbsoluteUrl('failure.mp3'));          
           increment(id, IDX_WRONG); 
+          increaseScore(-5);
         }
       }
 
@@ -31,13 +33,14 @@
       }
       
       function displaySection(opt_index) {
-        hideElement('main');
-        showElement('section');
-        hideElement('practice');
-        if (opt_index) {
+        document.getElementById('score').innerHTML = '0';
+        if (opt_index != null) {
           jsonData['current'] = jsonData.lesson.section[opt_index];
         }
         instantiatePage(jsonData);
+        hideElement('main');
+        showElement('section');
+        hideElement('practice');
       }
       
       function displayPractice() {
@@ -63,6 +66,11 @@
         tracking[id][idx]++;
       }
       
+      function increaseScore(amt) {
+        var score = document.getElementById('score');
+        score.innerHTML = Math.round(score.innerHTML) + amt;
+      }
+      
       function updateCookie() {
         tracking['id'] = document.getElementById('mobile').innerHTML;
         var cookie_value = JSON.stringify(tracking);
@@ -73,18 +81,20 @@
   <body>
     <h1>Maza Learn English</h1>
     <table id="personal" data-bind-id="learner">
-      <tr><td>Mobile: <span id='mobile'>{{MobileNumber}}</span></td></tr>
+      <tr>
+          <td>Mobile: <span id='mobile'>{{MobileNumber}}</span></td>
+      </tr>
     </table>
-    <div data-bind-id="lesson">
+    <div template-id="lesson" data-bind-id="lesson">
     <div id="main">
-    <div id="menu" data-bind-id="section">
+    <div id="menu" template-id="section" data-bind-id="section">
       <a href="javascript:void(0);" onclick="mazaa.playAudio(makeAbsoluteUrl('{{sound}}')); displaySection({{_index}}); return true;">
            <img xbl2:src="{{img}}" title="{{name}}" width=200>
       </a>
     </div>
     </div>
  
-    <div id="section" data-bind-id="current" style="display:none">    
+    <div id="section" template-id="currentsection" data-bind-id="current" style="display:none">    
       <h4>{{name}}</h4>
       <input type="button" value="Back" onclick="updateCookie(); displayMain();">
       <div id="scene" class="album">
@@ -98,8 +108,9 @@
     
     <div id="practice" style="display:none">
       <h4>Practice</h4>
+      <div>Score: <span id="score" width=100 style="background-color: yellow"></span></div>
       <input type="button" value="Back" onclick="updateCookie(); displaySection();">
-      <div id="scene1" class="album" data-bind-id="practice">
+      <div id="scene1" template-id="practice" class="album" data-bind-id="practice">
         <div>
           <img src='sound_icon.jpg' id="testSoundIcon" height="50" width="50" 
                onclick="mazaa.playAudio(makeAbsoluteUrl('{{question}}'))">

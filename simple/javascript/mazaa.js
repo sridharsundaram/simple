@@ -18,6 +18,7 @@ if (typeof android == "undefined") {
     if (!e) {
         e = document.createElement("audio");
         e.id = "audio";
+        document.body.appendChild(e);
     }
     e.pause();
     e.src = url;
