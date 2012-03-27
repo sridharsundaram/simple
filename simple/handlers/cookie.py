@@ -10,8 +10,7 @@ class Cookie:
   def parse_maza(cookies):
     # Retrieve tracking cookie to find stats for this user
     
-    cookie = cookies['maza']
-    if not cookie:
+    if not 'maza' in cookies:
       return (None, None, None)
     
     cookie = urllib.unquote(cookies['maza'])
