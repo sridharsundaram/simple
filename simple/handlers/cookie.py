@@ -9,6 +9,11 @@ class Cookie:
   @staticmethod 
   def parse_maza(cookies):
     # Retrieve tracking cookie to find stats for this user
+    
+    cookie = cookies['maza']
+    if not cookie:
+      return (None, None, None)
+    
     cookie = urllib.unquote(cookies['maza'])
     if cookie:
       tracker = simplejson.loads(cookie)
