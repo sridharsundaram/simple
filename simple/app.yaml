@@ -21,6 +21,10 @@ handlers:
   static_files: static/images/\1
   upload: static/images/(.*\.gif)
 
+- url: /(.*\.apk)
+  static_files: static/\1
+  upload: static/(.*\.apk)
+
 - url: /(.*\.cmf)
   static_files: static/\1
   upload: static/(.*\.mf)
