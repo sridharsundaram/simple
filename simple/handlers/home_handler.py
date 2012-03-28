@@ -12,6 +12,7 @@ class HomeHandler(webapp.RequestHandler):
     learner = Learner.retrieve(Learner, mobile_number)
     if not learner:
       self.redirect('/') # redirect to registration.
+      return
       
     jsonData = {
       'learner' : { 'MobileNumber' : learner.MobileNumber},

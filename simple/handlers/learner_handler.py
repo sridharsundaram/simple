@@ -35,8 +35,6 @@ class LearnerHandler(FormHandler):
     if key:
       if action == 'Delete':
         learner.delete()
-    else:
-      pass
     self.render(learner)
     
     
