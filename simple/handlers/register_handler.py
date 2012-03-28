@@ -65,6 +65,9 @@ class RegisterHandler(webapp.RequestHandler):
         learner.Status = simplejson.dumps({'id': str(mobile)})
         learner.put()
         self.response.headers['Set-Cookie'] =  Cookie.get_maza_cookie_str(learner.Status)
+      else: 
+        # Learner already existed, take him to lesson 1
+        self.redirect('/' + mobile);
     else:
       path = os.path.join(os.path.dirname(__file__), "../registration_fail.html")
     self.response.out.write(template.render(path, {'mobile' : mobile}))
