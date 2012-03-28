@@ -15,10 +15,13 @@ class Cookie:
     
     cookie = urllib.unquote(cookies['maza'])
     if cookie:
-      tracker = simplejson.loads(cookie)
-      mobile = tracker['id']
-      learner = Learner.retrieve(Learner, mobile)
-      return (cookie, mobile, learner)
+      try:
+        tracker = simplejson.loads(cookie)
+        mobile = tracker['id']
+        learner = Learner.retrieve(Learner, mobile)
+        return (cookie, mobile, learner)
+      except simplejson.JSONDecodeError:
+        pass
     return (None, None, None)
   
   @staticmethod

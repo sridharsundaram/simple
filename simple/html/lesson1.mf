@@ -1,5 +1,5 @@
 CACHE MANIFEST
-# 7 feb 2012 v0.147
+# 7 feb 2012 v0.145
 javascript/mazaa.js
 javascript/random.js
 javascript/template.js
@@ -7,10 +7,12 @@ javascript/lookup.js
 javascript/util.js
 javascript/template_ops.js
 javascript/client.js
+javascript/appcache.js
 stylesheets/mazaa.css
 sound_icon.jpg
 success.mp3
 failure.mp3
+ajax-loader.gif
 #Lesson1
 Mall.jpg
 Mall.mp3

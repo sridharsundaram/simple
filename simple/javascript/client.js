@@ -27,26 +27,6 @@ console.log = function(str) {
   }
 };
 
-// Reload AppCache.
-var reloadAppCache = function() {
-  var cache = window.applicationCache;
-  if (cache) {
-    cache.addEventListener('updateready', function(e) {
-      if (cache.status == cache.UPDATEREADY) {
-        // We are not reloading the page because this might cause data loss (in
-        // case user is filling a form).
-        cache.swapCache();
-        console.log('Swapped to newer version of appcache');
-        if (confirm('The next scene has been downloaded. Play it?')) {
-          window.location.reload();
-        }
-      }
-    }, false);
-  }
-};
-
-window.addEventListener('load', reloadAppCache);
-
 // //////////////////////////////////////////////////////////////////////////
 // XHR related variables and methods
 // //////////////////////////////////////////////////////////////////////////

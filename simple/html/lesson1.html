@@ -85,7 +85,11 @@
           <td>Mobile: <span id='mobile'>{{MobileNumber}}</span></td>
       </tr>
     </table>
-    <div template-id="lesson" data-bind-id="lesson">
+      <div id="progressDiv">Loading Lesson 
+        <img src="/ajax-loader.gif" alt="loading">
+      </div>
+    <div id="lesson" style="display:none">
+    <div template-id="lesson" data-bind-id="lesson" style="display:none">
     <div id="main">
     <div id="menu" template-id="section" data-bind-id="section">
       <a href="javascript:void(0);" onclick="mazaa.playAudio(makeAbsoluteUrl('{{sound}}')); displaySection({{_index}}); return true;">
@@ -129,6 +133,8 @@
         </div>
       </div>
     </div>
+    </div>
+    <script type="text/javascript" src="javascript/appcache.js"></script>
     <script type="text/javascript">
       var jsonData = {{JSONDATA}};
       instantiatePage(jsonData);
