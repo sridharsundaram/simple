@@ -1,4 +1,4 @@
-// Copyright Mazaa Learn 2012
+// Copyright 2012 Maza Learn Pvt Ltd. All Rights Reserved.
 // @author Sridhar Sundaram
 
 /**

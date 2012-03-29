@@ -1,13 +1,12 @@
-// Copyright 2012 Mazaa Learn. All Rights Reserved.
+// Copyright 2012 Maza Learn Pvt Ltd. All Rights Reserved.
 
 /**
- * @fileoverview Implements the Blink Client in javascript.
+ * @fileoverview Implements the Maza Client in javascript.
  * @author sridhar.sundaram@gmail.com (Sridhar Sundaram)
  */
 
 // //////////////////////////////////////////////////////////////////////////
 // Flags.
-// TODO(ssundaram): Push flags from server or find a better way to do this
 // //////////////////////////////////////////////////////////////////////////
 /**
  * @define {boolean} If true, debug messages are logged to console.

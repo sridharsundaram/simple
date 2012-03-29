@@ -1,5 +1,11 @@
-// Copyright Mazaa Learn 2012
+// Copyright 2012 Maza Learn Pvt Ltd. All Rights Reserved.
 // @author Sridhar Sundaram
+/**
+ * @fileoverview Implements the Maza interface in javascript.
+ * This will work with either an Android client or with normal browsers.
+ * @author sridhar.sundaram@gmail.com (Sridhar Sundaram)
+ */
+
 
 var NUM_ANSWER_CHOICES = 4;
 

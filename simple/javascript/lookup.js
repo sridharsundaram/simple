@@ -1,4 +1,4 @@
-// Copyright 2012 Mazaa Learn. All Rights Reserved.
+// Copyright 2012 Maza Learn. All Rights Reserved.
 
 /**
  * @fileoverview Implements the lookup functions for looking up the context

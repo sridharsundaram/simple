@@ -1,4 +1,4 @@
-// Copyright 2012 Mazaa Learn. All Rights Reserved.
+// Copyright 2012 Maza Learn Pvt Ltd. All Rights Reserved.
 
 /**
  * @fileoverview Implements Template Ops - these are operators used for
