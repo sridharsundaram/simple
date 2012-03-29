@@ -30,7 +30,7 @@ Rest_Rooms.jpg
 Security_Guard.jpg
 Shops.jpg 
 ATM.mp3
-Cafe.jpg
+Cafe.mp3
 CheckoutCounter.mp3
 Cinema_Theatre.mp3
 Escalator.mp3
