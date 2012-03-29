@@ -17,7 +17,7 @@ class Lesson1Data(Formdb):
                        {'id': '13', 'question': "Cinema_Theatre.mp3", 'answer': "Cinema_Theatre.jpg"},
                        {'id': '14', 'question': "Escalator.mp3", 'answer': "Escalator.jpg"},
                        {'id': '15', 'question': "Food_Court.mp3", 'answer': "Food_Court.jpg"},
-                       {'id': '16', 'question': "Mall.mp3", 'answer': "Mall.jpg"},
+                       {'id': '16', 'question': "Cafe.mp3", 'answer': "Cafe.jpg"},
                        {'id': '17', 'question': "Metal_Detector.mp3", 'answer': "Metal_Detector.jpg"},
                        {'id': '18', 'question': "Shops.mp3", 'answer': "Shops.jpg"},
                        {'id': '19', 'question': "Rest_Rooms.mp3", 'answer': "Rest_Rooms.jpg"},
@@ -37,6 +37,6 @@ class Lesson1Data(Formdb):
                        {'id': '7', 'question': "Printer.mp3", 'answer': "Printer.jpg"},
                        {'id': '8', 'question': "Reception.mp3", 'answer': "Reception.jpg"},
                        {'id': '9', 'question': "Sellotape.mp3", 'answer': "Sellotape.jpg"},
-                       {'id': '10', 'question': "Office.mp3", 'answer': "Office.jpg"}] 
+                       {'id': '10', 'question': "Water_Dispenser.mp3", 'answer': "Water_Dispenser.jpg"}] 
                      }]
     return {'section': sections}
