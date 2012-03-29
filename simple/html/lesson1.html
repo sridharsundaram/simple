@@ -3,6 +3,14 @@
 <html manifest="/lesson1.mf">
   <head>
     <title>Home</title>
+    <!-- Upload bar. Copied from
+    http://www.barenakedapp.com/the-design/displaying-percentages
+    http://www.webappers.com/progressBar/
+
+    License
+    This library is licensed under Creative Commons license, so you can use it for
+    anything you like, as long as you include the copyright notice
+    -->
     <script type="text/javascript" src="javascript/random.js"></script>
     <script type="text/javascript" src="javascript/maza.js"></script>
     <script type="text/javascript" src="javascript/lookup.js"></script>
@@ -86,7 +94,9 @@
       </tr>
     </table>
       <div id="progressDiv">Loading Lesson 
-        <img src="/ajax-loader.gif" alt="loading">
+        <img src="/percentImage.png"
+             alt="percentage" class="percentImage" id="progressBar"
+             style="background-position: 100% 0;">
       </div>
     <div id="lesson" style="display:none">
     <div template-id="lesson" data-bind-id="lesson" style="display:none">

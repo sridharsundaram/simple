@@ -11,7 +11,7 @@
 /**
  * @define {boolean} If true, debug messages are logged to console.
  */
-var FLAGS_log_to_console = false;
+var FLAGS_log_to_console = true;
 
 var __console_log = null;
 if (typeof(console) === 'undefined') {
@@ -219,4 +219,21 @@ function fetchAndBindData(relativeUrl, loadDataCallback) {
   }
   requestRefresh(window.location.protocol + '//' + window.location.host + 
                  relativeUrl);
+}
+
+var cacheFileRegex = /^[ \t]*[^ \t#].*$/;
+
+function findNumCacheFiles() {
+  var manifestRelativeUrl = document.documentElement.getAttribute("manifest");
+  var manifestUrl = window.location.protocol + '//' + window.location.host + manifestRelativeUrl;
+  xhReq.open('GET', manifestUrl, false);
+  xhReq.onreadystatechange = function() {};
+  xhReq.send(null);
+  xhReq.onreadystatechange = refresh;
+  var manifestLines = xhReq.getResponseText().split('\n');
+  var cacheFileCount = 0;
+  for (var i = 0; i < manifestLines.length; i++) {
+    if (manifestLines[i].match(cacheFileRegex)) cacheFileCount++;
+  }
+  return cacheFileCount - 1; // Reduce 1 for CACHE MANIFEST
 }

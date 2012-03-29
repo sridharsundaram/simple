@@ -12,7 +12,8 @@ stylesheets/maza.css
 sound_icon.jpg
 success.mp3
 failure.mp3
-ajax-loader.gif
+percentImage.png
+percentImage_back.png
 #Lesson1
 Mall.jpg
 Mall.mp3

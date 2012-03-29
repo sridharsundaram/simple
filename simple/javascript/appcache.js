@@ -8,8 +8,10 @@
 (function(){
   var webappCache = window.applicationCache;
   var progressDiv = document.getElementById('progressDiv');
+  var progressBar = document.getElementById('progressBar');
   var lessonDiv = document.getElementById('lesson');
-       
+  var numCacheFiles = 0;
+  var numDownloadedFiles = 0;
   switch (webappCache.status) {
   case 0:
     console.log("Cache status: Uncached");
@@ -47,16 +49,22 @@
 
   function progressCache(event) {
     console.log("Downloading cache..." + event.loaded + " " + event.total);
+    if (numCacheFiles == 0) {
+      numCacheFiles = findNumCacheFiles();
+    }
+    numDownloadedFiles++;
+    progressBar.style.backgroundPositionX =
+        100 * (1 - (numDownloadedFiles / numCacheFiles)) + '%';
     progressDiv.style.display = "";
   }
   function updateCache() {
     webappCache.swapCache();
+    progressDiv.style.display = "none";
+    lessonDiv.style.display = "";
     console.log("Cache has been updated due to a change found in the manifest");
     if (confirm('The next scene has been downloaded. Play it?')) {
       window.location.reload();
     }
-    progressDiv.style.display = "none";
-    lessonDiv.style.display = "";
   }
   function errorCache() {
     console.log("You're either offline or something has gone horribly wrong.");
