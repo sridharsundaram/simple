@@ -11,7 +11,7 @@
 /**
  * @define {boolean} If true, debug messages are logged to console.
  */
-var FLAGS_log_to_console = true;
+var FLAGS_log_to_console = false;
 
 var __console_log = null;
 if (typeof(console) === 'undefined') {
@@ -201,7 +201,8 @@ function getNestedTemplates() {
 function instantiatePage(jsonData) {
   if (!templateManager) {
     templateManager = new TemplateManager();
-  } 
+  }
+  console.log('instantiating page');
   templateManager.applyTemplate(jsonData);
 }
 

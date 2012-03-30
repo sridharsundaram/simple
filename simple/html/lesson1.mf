@@ -1,5 +1,5 @@
 CACHE MANIFEST
-# 7 feb 2012 v0.145
+# 7 feb 2012 v0.142
 javascript/maza.js
 javascript/random.js
 javascript/template.js
@@ -9,11 +9,11 @@ javascript/template_ops.js
 javascript/client.js
 javascript/appcache.js
 stylesheets/maza.css
+percentImage.png
+percentImage_back.png
 sound_icon.jpg
 success.mp3
 failure.mp3
-percentImage.png
-percentImage_back.png
 #Lesson1
 Mall.jpg
 Mall.mp3

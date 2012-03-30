@@ -7,6 +7,7 @@ handlers:
 - url: /stylesheets
   static_dir: stylesheets
   mime_type: text/css
+  expiration: "60s"
   
 - url: /(.*\.html)
   static_files: static/\1
@@ -16,10 +17,12 @@ handlers:
 - url: /javascript
   static_dir: javascript
   mime_type: text/javascript
+  expiration: "60s"
 
 - url: /(.*\.gif)
   static_files: static/images/\1
   upload: static/images/(.*\.gif)
+  expiration: "3600s"
 
 - url: /(.*\.apk)
   static_files: static/\1
@@ -34,14 +37,18 @@ handlers:
 - url: /(.*\.mp3)
   static_files: static/audio/\1
   upload: static/audio/(.*\.mp3)
+  expiration: "3600s"
 
 - url: /(.*\.jpg)
   static_files: static/images/\1
   upload: static/images/(.*\.jpg)
+  expiration: "3600s"
+  
 
 - url: /(.*\.png)
   static_files: static/images/\1
   upload: static/images/(.*\.png)
+  expiration: "3600s"
 
 - url: /.*
   script: main.py

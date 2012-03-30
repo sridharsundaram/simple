@@ -8,7 +8,7 @@ class ManifestHandler(webapp.RequestHandler):
 
   def get(self):
     self.response.headers['Content-Type'] = 'text/cache-manifest'
-    self.response.headers['Cache-Control'] = 'max-age=0'
+    self.response.headers['Cache-Control'] = 'max-age=10'
     
     # Retrieve tracking cookie to find stats for this user
     cookie, mobile, learner = Cookie.parse_maza(self.request.cookies)

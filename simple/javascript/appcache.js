@@ -13,23 +13,26 @@
   var numCacheFiles = 0;
   var numDownloadedFiles = 0;
   switch (webappCache.status) {
-  case 0:
+  case webappCache.UNCACHED:
     console.log("Cache status: Uncached");
     break;
-  case 1:
+  case webappCache.IDLE:
     console.log("Cache status: Idle");
+    lessonDiv.style.display = "";
+    progressDiv.style.display = "none";
     break;
-  case 2:
+  case webappCache.CHECKING:
     console.log("Cache status: Checking");
     break;
   case 3:
     console.log("Cache status: Downloading");
     progressDiv.style.display = "";
+    lessonDiv.style.display = "none";
     break;
-  case 4:
+  case webappCache.UPDATEREADY:
     console.log("Cache status: Updateready");
     break;
-  case 5:
+  case webappCache.OBSOLETE:
     console.log("Cache status: Obsolete");
     break;
   default:
@@ -48,24 +51,28 @@
   }
 
   function progressCache(event) {
-    console.log("Downloading cache..." + event.loaded + " " + event.total);
     if (numCacheFiles == 0) {
       numCacheFiles = findNumCacheFiles();
     }
     numDownloadedFiles++;
+    console.log("Downloading " + numDownloadedFiles + " of " + numCacheFiles);
     progressBar.style.backgroundPositionX =
         100 * (1 - (numDownloadedFiles / numCacheFiles)) + '%';
-    progressDiv.style.display = "";
   }
+
   function updateCache() {
-    webappCache.swapCache();
     progressDiv.style.display = "none";
     lessonDiv.style.display = "";
+    if (webappCache.status != webappCache.UPDATEREADY) {
+      return;
+    }
+    webappCache.swapCache();
     console.log("Cache has been updated due to a change found in the manifest");
-    if (confirm('The next scene has been downloaded. Play it?')) {
+    if (confirm('Lesson downloaded. Play?')) {
       window.location.reload();
     }
   }
+  
   function errorCache() {
     console.log("You're either offline or something has gone horribly wrong.");
   }
