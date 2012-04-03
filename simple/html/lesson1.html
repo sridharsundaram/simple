@@ -23,12 +23,12 @@
       var templateManager = null;
       function showResult(id, success) {
         if (success) {
-          mazaa.playAudio(makeAbsoluteUrl('success.mp3'));
+          maza.playAudio(makeAbsoluteUrl('success.mp3'));
           increment(id, IDX_CORRECT);
           increaseScore(10);
           setTimeout(displayPractice, 1000);
         } else { // failure
-          mazaa.playAudio(makeAbsoluteUrl('failure.mp3'));          
+          maza.playAudio(makeAbsoluteUrl('failure.mp3'));          
           increment(id, IDX_WRONG); 
           increaseScore(-5);
         }
@@ -60,7 +60,7 @@
         hideElement('main');
         hideElement('section');
         showElement('practice');
-        mazaa.playAudio(makeAbsoluteUrl(jsonData['practice'][0].question));
+        maza.playAudio(makeAbsoluteUrl(jsonData['practice'][0].question));
       }
       var IDX_VIEW = 0;
       var IDX_WRONG = 1;
@@ -87,7 +87,7 @@
     </script>
   </head>
   <body>
-    <h1>Maza Learn English</h1>
+    <h1>Maza Learn English</h1>&nbsp;&nbsp;<font size="-2">v0.2</font>
     <table id="personal" data-bind-id="learner">
       <tr>
           <td>Mobile: <span id='mobile'>{{MobileNumber}}</span></td>
@@ -102,7 +102,7 @@
     <div template-id="lesson" data-bind-id="lesson" style="display:none">
     <div id="main">
     <div id="menu" template-id="section" data-bind-id="section">
-      <a href="javascript:void(0);" onclick="mazaa.playAudio(makeAbsoluteUrl('{{sound}}')); displaySection({{_index}}); return true;">
+      <a href="javascript:void(0);" onclick="maza.playAudio(makeAbsoluteUrl('{{sound}}')); displaySection({{_index}}); return true;">
            <img xbl2:src="{{img}}" title="{{name}}" width=200>
       </a>
     </div>
@@ -119,7 +119,7 @@
       <div id="scene" class="album">
         <div data-bind-id="list" class="img">
            <img height=100 width=100 xbl2:src="{{answer}}" 
-                onclick="increment({{id}}, IDX_VIEW); mazaa.playAudio(makeAbsoluteUrl('{{question}}'))">
+                onclick="increment({{id}}, IDX_VIEW); maza.playAudio(makeAbsoluteUrl('{{question}}'))">
         </div>
       </div>
       
@@ -136,7 +136,7 @@
       <div id="scene1" template-id="practice" class="album" data-bind-id="practice">
         <div>
           <img src='sound_icon.jpg' id="testSoundIcon" height="50" width="50" 
-               onclick="mazaa.playAudio(makeAbsoluteUrl('{{question}}'))">
+               onclick="maza.playAudio(makeAbsoluteUrl('{{question}}'))">
         </div>
         <div class="img" data-bind-id="choices">
           <img width=100 height=100 xbl2:src="{{choice}}" onclick="showResult({{id}}, {{correct}});">

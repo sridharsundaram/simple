@@ -18,5 +18,5 @@ class Learner(Formdb):
   Profession = db.StringProperty()
   Status = db.StringProperty()
   JoinDate = db.DateProperty(default = date.today())
-  Channel = db.StringProperty()
+  Channel = db.StringProperty() # APP, WEB, SMS
   

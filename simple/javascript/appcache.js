@@ -12,22 +12,30 @@
   var lessonDiv = document.getElementById('lesson');
   var numCacheFiles = 0;
   var numDownloadedFiles = 0;
+  
+  function showProgressHideMain(show) {
+    if (show) {
+      progressDiv.style.display = "";
+      lessonDiv.style.display = "none";
+    } else {
+      lessonDiv.style.display = "";
+      progressDiv.style.display = "none";      
+    }   
+  }
   switch (webappCache.status) {
   case webappCache.UNCACHED:
     console.log("Cache status: Uncached");
     break;
   case webappCache.IDLE:
     console.log("Cache status: Idle");
-    lessonDiv.style.display = "";
-    progressDiv.style.display = "none";
+    showProgressHideMain(false);
     break;
   case webappCache.CHECKING:
     console.log("Cache status: Checking");
     break;
   case 3:
     console.log("Cache status: Downloading");
-    progressDiv.style.display = "";
-    lessonDiv.style.display = "none";
+    showProgressHideMain(true);
     break;
   case webappCache.UPDATEREADY:
     console.log("Cache status: Updateready");
@@ -41,13 +49,11 @@
   
   function noupdateCache() {
     console.log("No update to cache found");
-    progressDiv.style.display = "none";
-    lessonDiv.style.display = "";
+    showProgressHideMain(false);
   }
   function doneCache() {
     console.log("Cache has finished downloading");
-    progressDiv.style.display = "none";
-    lessonDiv.style.display = "";
+    showProgressHideMain(false);
   }
 
   function progressCache(event) {
@@ -58,11 +64,13 @@
     console.log("Downloading " + numDownloadedFiles + " of " + numCacheFiles);
     progressBar.style.backgroundPositionX =
         100 * (1 - (numDownloadedFiles / numCacheFiles)) + '%';
+    if (numDownloadedFiles == numCacheFiles) {
+      showProgressHideMain(false);      
+    }
   }
 
   function updateCache() {
-    progressDiv.style.display = "none";
-    lessonDiv.style.display = "";
+    showProgressHideMain(false);
     if (webappCache.status != webappCache.UPDATEREADY) {
       return;
     }

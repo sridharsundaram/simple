@@ -51,7 +51,8 @@ class RegisterHandler(webapp.RequestHandler):
 
   def post(self):
     mobile = self.request.get('mobile')
-    logging.info("Mobile: %s, User Agent: %s" % (mobile, self.request.user_agent))
+    browser = self.request.get('browser')
+    logging.info("Mobile: %s, User Agent: %s Browser %s" % (mobile, self.request.user_agent, browser))
     self.response.headers['Content-Type'] = 'text/html'
     if bool(RE_MOBILE_NUMBER.search(mobile)) and len(mobile) == 10 and mobile != '9876543210':
       path = os.path.join(os.path.dirname(__file__), "../registration_done.html")
@@ -60,11 +61,13 @@ class RegisterHandler(webapp.RequestHandler):
         learner = Learner()
         learner.MobileNumber = db.PhoneNumber(mobile)
         learner.UserAgent = self.request.user_agent
-        learner.Channel = 'WEB'
+        learner.Channel = 'WEB' if (browser == 'true') else 'APP'
         learner.MotherTongue = 1 # Hindi
         learner.Status = simplejson.dumps({'id': str(mobile)})
         learner.put()
         self.response.headers['Set-Cookie'] =  Cookie.get_maza_cookie_str(learner.Status)
+        if browser == 'false':
+          self.redirect('/' + mobile)
       else: 
         # Learner already existed, take him to lesson 1
         self.redirect('/' + mobile);

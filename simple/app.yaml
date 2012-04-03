@@ -37,11 +37,13 @@ handlers:
 - url: /(.*\.mp3)
   static_files: static/audio/\1
   upload: static/audio/(.*\.mp3)
+  mime_type: audio/mpeg
   expiration: "3600s"
 
 - url: /(.*\.jpg)
   static_files: static/images/\1
   upload: static/images/(.*\.jpg)
+  mime_type: image/jpeg
   expiration: "3600s"
   
 

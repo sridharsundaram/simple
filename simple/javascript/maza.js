@@ -9,17 +9,34 @@
 
 var NUM_ANSWER_CHOICES = 4;
 
-Mazaa = function() {
+Maza = function() {
 };
 
 // android interface is defined internally for Android webview.
-if (typeof android == "undefined") {
-  Mazaa.prototype.isBrowser = true;
+// We will first define a browse version for Maza API and 
+//  override with Android specific version if available.
+
+  Maza.prototype.isBrowser = true;
+
+  Maza.prototype.browser = 'chrome';
+  // Let us find out which browser this is.
+  if (navigator.userAgent.indexOf('nokia') != -1) {
+    Maza.prototype.browser = 'nokiaS40';
+  }
+  
+  Maza.prototype.getMobileNumber = function() {
+    return "";
+  }
+  
   /**
    * Plays the audio corresponding to url.
    * @param url - url of the audio
    */
-  Mazaa.prototype.playAudio = function(url) {
+  Maza.prototype.playAudio = function(url) {
+    if (Maza.prototype.browser == 'nokiaS40') {
+      mwl.loadURL(url); // rtsp url
+      return;
+    }
     var e = document.getElementById("audio");
     if (!e) {
         e = document.createElement("audio");
@@ -31,12 +48,17 @@ if (typeof android == "undefined") {
     e.load();
     e.play();
   }
-} else { // Android Webview
-  Mazaa.prototype.isBrowser = false;
-  Mazaa.prototype.playAudio = function(url) { android.playAudio(url); }
+} 
+
+if (typeof android != "undefined") { // Android Webview
+  Maza.prototype.isBrowser = false;
+  Maza.prototype.getMobileNumber = function() { return android.getMobileNumber(); }
+  if (android.getVersion() <= 9) { // After version 9, this got fixed.
+    Maza.prototype.playAudio = function(url) { android.playAudio(url); }
+  }
 }
 
-Mazaa.prototype.playAudioSequence = function(urlArray) {
+Maza.prototype.playAudioSequence = function(urlArray) {
   if (urlArray.length == 0) return;
   var e = document.getElementById("audio");
   if (!e) {
@@ -49,7 +71,7 @@ Mazaa.prototype.playAudioSequence = function(urlArray) {
   var url = urlArray.shift();
   e.src = url;
   e.load();
-  e.addEventListener('ended', function() { Mazaa.prototype.playAudioSequence(urlArray); });
+  e.addEventListener('ended', function() { Maza.prototype.playAudioSequence(urlArray); });
   e.play();
 }
 
@@ -57,7 +79,7 @@ function makeAbsoluteUrl(relativeUrl) {
   return location.protocol + '//' + location.host + "/" + relativeUrl;
 }
 
-mazaa = new Mazaa();
+maza = new Maza();
 
 // Check if a new app-cache is available on page load.
 window.addEventListener('load', function(e) {

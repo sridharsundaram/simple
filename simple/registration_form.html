@@ -1,15 +1,25 @@
 <html>
   <head>
     <title>Maza Learn English Registration</title>
+    <script type="text/javascript" src="javascript/maza.js"></script>
   </head>
   <body align="center" style="border: 5px solid #00A0FF; background-color:#FFFFD0">
     <img src="mazalearn-logo.png" width=75>
-    <h2>FREE English</h2>
+    <h2>Maza English</h2>
     <form method="post">
     <table align="center">
       <tr>
         <td><img width=30 src="Mobile_phone.png"></td>
-        <td valign="middle"><input name="mobile" type="tel" style='-wap-input-format: "9n"' size="10"><br/>
+        <td valign="middle">
+            <input id="mobile" name="mobile" type="tel" style='-wap-input-format: "9n"' size="10"><br/>
+            <input id="browser" type="hidden">
+            <script type="text/javascript">
+               var mobile = document.getElementById("mobile");
+               mobile.value = maza.getMobileNumber();
+               var browser = document.getElementById("browser");
+               browser.value = maza.isBrowser;
+               alert(' isbrowser = ' + browser.value);
+            </script>
             <font color="gray" size="-1" face="courier">&nbsp;9876543210</font>
         </td>
       </tr>
