@@ -1,5 +1,5 @@
 CACHE MANIFEST
-# 7 feb 2012 v0.142
+# 7 feb 2012 v0.143
 javascript/maza.js
 javascript/random.js
 javascript/template.js

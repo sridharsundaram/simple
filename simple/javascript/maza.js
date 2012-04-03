@@ -16,39 +16,38 @@ Maza = function() {
 // We will first define a browse version for Maza API and 
 //  override with Android specific version if available.
 
-  Maza.prototype.isBrowser = true;
+Maza.prototype.isBrowser = true;
 
-  Maza.prototype.browser = 'chrome';
-  // Let us find out which browser this is.
-  if (navigator.userAgent.indexOf('nokia') != -1) {
-    Maza.prototype.browser = 'nokiaS40';
+Maza.prototype.browser = 'chrome';
+// Let us find out which browser this is.
+if (navigator.userAgent.indexOf('nokia') != -1) {
+  Maza.prototype.browser = 'nokiaS40';
+}
+
+Maza.prototype.getMobileNumber = function() {
+  return "";
+}
+
+/**
+ * Plays the audio corresponding to url.
+ * @param url - url of the audio
+ */
+Maza.prototype.playAudio = function(url) {
+  if (Maza.prototype.browser == 'nokiaS40') {
+    mwl.loadURL(url); // rtsp url
+    return;
   }
-  
-  Maza.prototype.getMobileNumber = function() {
-    return "";
+  var e = document.getElementById("audio");
+  if (!e) {
+      e = document.createElement("audio");
+      e.id = "audio";
+      document.body.appendChild(e);
   }
-  
-  /**
-   * Plays the audio corresponding to url.
-   * @param url - url of the audio
-   */
-  Maza.prototype.playAudio = function(url) {
-    if (Maza.prototype.browser == 'nokiaS40') {
-      mwl.loadURL(url); // rtsp url
-      return;
-    }
-    var e = document.getElementById("audio");
-    if (!e) {
-        e = document.createElement("audio");
-        e.id = "audio";
-        document.body.appendChild(e);
-    }
-    e.pause();
-    e.src = url;
-    e.load();
-    e.play();
-  }
-} 
+  e.pause();
+  e.src = url;
+  e.load();
+  e.play();
+}
 
 if (typeof android != "undefined") { // Android Webview
   Maza.prototype.isBrowser = false;
