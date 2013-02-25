@@ -115,7 +115,7 @@ AttributeOp.prototype.count = 0;
  * Constructs a variable operator.
  * Variables are restricted to being used inside Value operators.
  * @param name {String} name of variable
- * @param formatter {String} name of registeredd formatter function
+ * @param formatter {String} name of registered formatter function
  */
 function VariableOp(name, formatter) {
   this.name = name;
