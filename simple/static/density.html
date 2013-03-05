@@ -3,6 +3,7 @@
 <html>
   <head>
     <title>Density</title>
+    <link rel="stylesheet" type="text/css" href="stylesheets/density.css">
     <script type="text/javascript" src="javascript/random.js"></script>
     <script type="text/javascript" src="javascript/maza.js"></script>
     <script type="text/javascript" src="javascript/lookup.js"></script>
@@ -10,7 +11,6 @@
     <script type="text/javascript" src="javascript/template.js"></script>
     <script type="text/javascript" src="javascript/template_ops.js"></script>
     <script type="text/javascript" src="javascript/client.js"></script>
-    <link rel="stylesheet" type="text/css" href="stylesheets/maza.css">
     <script type="text/javascript">
       var templateManager = null;
       function showResult(id, success) {
@@ -21,13 +21,6 @@
         }
       }
 
-      function displaySection(opt_index) {
-        if (opt_index != null) {
-          jsonData['current'] = jsonData.lesson.section[opt_index];
-        }
-        instantiatePage(jsonData);
-      }
-      
       function display(id) {
         var e = document.getElementById(id);
         if (e != null) {
@@ -35,13 +28,26 @@
         }
       }
       
-      function show(element, explanationid, goalid) {
-        var id = element.id;
+      function show(id, explanationid, goalid) {
         var p1 = id.indexOf('.');
         var p2 = id.lastIndexOf('.');
         var suffix = id.substring(p1, p2);
         display('explanation' + suffix + '.' + explanationid);
-        display('goal.' + goalid);
+        display('learning' + suffix + '.' + explanationid);
+        var pmid = suffix.lastIndexOf('.');
+        display('goal' + suffix.substring(0, pmid) + "." + goalid);
+      }
+      
+      function toggleDisplay(img) {
+      var isClosed = img.src.indexOf('plus.png') != -1;
+        img.src =  isClosed ? 'minus.png' : 'plus.png';
+        for (var e = img; e != null && e.nodeName != 'DIV'; e = e.parentNode);
+        e = e.getElementsByTagName('DIV')[0];
+        if (e != null) {
+          e.style.display = isClosed ? '' : 'none';
+          var f = document.getElementById(e.id + ".0");
+          f.style.display = '';
+        }
       }
       
     </script>
@@ -49,23 +55,37 @@
   <body>
     <div><div align="right"><font size="-2">v0.1</font></font></div>
     <h1>Density</h1>
-      <div template-id="goal" data-bind-id="goal" style="display:none">
-        <div id="goal" style="display:none">
-          <h3>{{statement}}</h3>
-          <h4>{{activity}}</h4>
+    <div data-bind-id="section" style="display:none">
+      <table><tr>
+         <td><img src="plus.png" width=30 onclick="toggleDisplay(this)"></td>
+         <td><span class="section">{{statement}}</span></td>
+       </tr></table>
+       <div id="goal" style="display:none">
+       <div template-id="goal" data-bind-id="goal" style="display:none">
+          <table><tr>
+            <td><img src="plus.png" width=30 onclick="toggleDisplay(this)"></td>
+            <td><h3>{{statement}}</h3></td>
+          </tr></table>
+          <div id="goal" style="display:none">
+          <!-- <h4>{{activity}}</h4> -->
           <div data-bind-id="subgoal">
             <div id="goal" style="display:none">
               <h3>{{statement}}</h3>
-              <img xbl2:src="{{image}}" width=100>
+              <table><tr>
+                <td data-bind-id="images">
+                  <img xbl2:src="{{image}}" width=100>
+                </td>
+              </tr></table>
               <table>
                 <tr>
                   <td data-bind-id="choice">
-                    <input type="button" onclick="show(this, '{{explanationid}}', '{{goalid}}');" value={{value}}>
+                    <input type="button" onclick="show(this.id, '{{explanationid}}', '{{goalid}}');" value={{value}}>
                   </td>
                 </tr>
               </table>
-              <div data-bind-id="explanation">
-                <div id="explanation" style="display:none">{{content}}</div>
+              <div data-bind-id="explanation" style="font-color:red">
+                <div id="explanation" class="explanation" style="display:none">{{content}}</div>
+                <div id="learning" class="learning" style="display:none">{{learning}}</div>
               </div>
             </div>
           </div>
@@ -77,84 +97,112 @@
             </tr>
           </table>
           <div data-bind-id="explanation">
-            <div id="explanation" style="display:none">{{content}}</div>
+            <div id="explanation" style="color: red; display:none">{{content}}</div>
+            <div id="learning" class="learning" style="display:none">{{learning}}</div>
           </div>
         </div>
+        </div>
       </div>
+      </div>
+    </div>
  
     <script type="text/javascript">
       var jsonData = {
-       goal:[
-              {statement: "Shape is how something looks.",
+       section:[
+           {statement:"Shapes",
+            goal: [
+              {statement: "Children can have very vague notions of shape and often think that only regular geometric shapes are shapes.",
                activity: "Let us look at and identify shapes of different things.",
                subgoal: [ 
-                       {statement: "Does this have a shape?", 
-                        activity: "Circle image",
-                        image: "circle.png",
-                        choice: [ { value: "yes", goalid: "0.1" , explanationid:"0"},
-                                  { value: "no", goalid: "0.1" , explanationid:"1"}],
-                        explanation: [ { content: "Yes, it does."}, {content: "It does have a shape."}]
-                        },
-                       {statement: "Does this have a shape?", 
-                        activity: "Square image",
-                        image: "square.png",
-                        choice: [ { value: "yes", goalid: "0.2" , explanationid:"0"},
-                                  { value: "no", goalid: "0.2" , explanationid:"1"}],
-                        explanation: [ { content: "Yes, it does."}, {content: "It does have a shape."}]
-                        },
-                       {statement: "Does this have a shape?", 
-                        activity: "Triangle image",
-                        image: "triangle.png",
-                        choice: [ { value: "yes", goalid: "0.3" , explanationid:"0"},
-                                  { value: "no", goalid: "0.3" , explanationid:"1"}],
-                        explanation: [ { content: "Yes, it does."}, {content: "It does have a shape."}]
-                        },
-                       {statement: "These were regular shapes. <br>Does this have a shape?", 
-                        activity: "Irregular star image",
-                        image: "irregularstar.png",
-                        choice: [ { value: "yes", goalid: "0.4" , explanationid:"0"},
-                                  { value: "no", goalid: "0.4" , explanationid:"1"}],
-                        explanation: [ { content: "Yes, it does."}, {content: "It does have a shape. It is an irregular shape."}]
-                        },
-                       {statement: "Does this have a shape?", 
-                        activity: "Irregular someother image",
-                        image: "blob.png",
-                        choice: [ { value: "yes", goalid: "0.5" , explanationid:"0"},
-                                  { value: "no", goalid: "0.5" , explanationid:"1"}],
-                        explanation: [ { content: "Yes, it does."}, {content: "It does have a shape. It is also an irregular shape."}]
-                        },
-                       {statement: "These were irregular shapes. Does this have a shape?", 
-                        activity: "Cube image",
-                        image: "cube.png",
-                        choice: [ { value: "yes", goalid: "0.6" , explanationid:"0"},
-                                  { value: "no", goalid: "0.6" , explanationid:"1"}],
-                        explanation: [ { content: "Yes, it does."}, {content: "It does have a shape."}]
-                        },
-                       {statement: "Does this have a shape?", 
-                        activity: "Key image",
-                        image: "3dshape.png",
-                        choice: [ { value: "yes", goalid: "0.7" , explanationid:"0"},
-                                  { value: "no", goalid: "0.7" , explanationid:"1"}],
-                        explanation: [ { content: "Yes, it does."}, {content: "It does have a shape."}]
-                        },
-                       {statement: "These were 3D solid shapes. Does this have a shape?", 
-                        activity: "Water in glass",
-                        image: "wateringlass.png",
-                        choice: [ { value: "yes", goalid: "0.8" , explanationid:"0"},
-                                  { value: "no", goalid: "0.8" , explanationid:"1"}],
-                        explanation: [ { content: "Yes, the water is taking the shape of the glass."}, {content: "It does have a shape."}]
-                        },
-                       {statement: "Does this have a shape?", 
-                        activity: "water in beaker",
-                        image: "waterinbeaker.png",
+                       {statement: "Do you think the figures below have a shape?", 
+                        activity: "Regular shapes",
+                        images: [{image:"circle.png"}, {image:"square.png"}, {image: "triangle.png"}],
                         choice: [ { value: "yes", goalid: "1" , explanationid:"0"},
-                                  { value: "no", goalid: "1" , explanationid:"1"}],
-                        explanation: [ { content: "Yes, the water is taking the shape of the beaker."}, {content: "It does have a shape."}]
+                                  { value: "no", goalid: "1" , explanationid:"0"}],
+                        explanation: [ { content: "Yes, these figures have a shape. You will readily recognize these as regular geometric shapes. We define them according to some special properties of each and then name them as a circle, square and triangle etc."}]
+                        },
+                       {statement: "Do you think the figures below have a shape?", 
+                        activity: "Irregular shapes",
+                        images: [ {image: "irregularstar.png"}, {image: "blob.png"}],
+                        choice: [ { value: "yes", goalid: "2" , explanationid:"0"},
+                                  { value: "no", goalid: "2" , explanationid:"0"}],
+                        explanation: [ { content: "Yes, these figures do have a shape. We would call these irregular shapes, because we have no clear definition that will make us fit such a shape into a category. We would say, the shape is how the figure looks like."}]
+                        },
+                       {statement: "Do you think the figures below have a shape?", 
+                        activity: "3D shapes",
+                        images: [{image: "cube.png"}, {image: "3dshape.png"}],
+                        choice: [ { value: "yes", goalid: "1.0" , explanationid:"0"},
+                                  { value: "no", goalid: "1.0" , explanationid:"0"}],
+                        explanation: [ { content: "These are three dimensional solid shapes."}]
                         },
                  ]                        
               },
-              {statement: "The shape depends on whether it is a solid, liquid or gas.", 
-               activity: "See example shapes of different states of matter."},
+              {statement: "The shape depends on the state, that is, whether it is a solid, liquid or gas.", 
+               activity: "See example shapes of different states of matter.",
+               subgoal: [
+                       {statement: "Take a stone and place it in different containers like bowl, plate, glass, box etc. Do you think stone will change its shape in each container?", 
+                        activity: "Solid shape",
+                        choice: [ { value: "yes", goalid: "1" , explanationid:"0"},
+                                  { value: "no", goalid: "1" , explanationid:"0"}],
+                        explanation: [ { content: "No. <br>Clearly the stone has a definite boundary which does not change as we change the container. Similarly other solids like pencil, duster etc have a definite shape and boundary."}]
+                        },
+                       {statement: " In what way does the shape of a liquid differ from the shape a solid has? <br>Do the liquids in the below containers have a shape?", 
+                        activity: "Liquid shape",
+                        images: [ {image: "wateringlass.png"}, {image: "waterinbeaker.png"} ],
+                        choice: [ { value: "yes", goalid: "2" , explanationid:"0"},
+                                  { value: "no", goalid: "2" , explanationid:"0"}],
+                        explanation: [ { content: "Think about the boundary of water you are able to see in a glass of water. The boundary you are able to see is the shape of water."}]
+                        },
+                       {statement: "Take water and pour it into glass, bowl, plate, bottle etc. Do you think shape of water will change in every container?", 
+                        activity: "Liquid shape",
+                        choice: [ { value: "yes", goalid: "3" , explanationid:"0"},
+                                  { value: "no", goalid: "3" , explanationid:"0"}],
+                        explanation: [ { content: "Yes. Notice that water has a boundary which changes with the container.",
+                                         learning: "Similarly other liquids like milk, blood, oil etc takes the shape and boundary of the container, yet maintaining a definite surface too, like the top surface of water in a container that is not full. We notice that liquids do not have definite shape, but take the shape and boundary of the container."}]
+                        },
+                       {statement: "Let us now examine gases.<br> Does air have shape?", 
+                        activity: "Gas shape",
+                        choice: [ { value: "yes", goalid: "4" , explanationid:"0"},
+                                  { value: "no", goalid: "4" , explanationid:"0"}],
+                        explanation: [ { content: ""}]
+                        },
+                       {statement: "Light an agarabatti and observe smoke rising. Do you think smoke has a shape?", 
+                        activity: "Gas shape",
+                        images: [ {image: "incensesmoke.gif"} ],
+                        choice: [ { value: "yes", goalid: "5" , explanationid:"0"},
+                                  { value: "no", goalid: "5" , explanationid:"0"}],
+                        explanation: [ { content: "Yes, we can see the body of the smoke and its boundary too."}]
+                        },
+                       {statement: "Do you think it has a definite shape?", 
+                        activity: "Gas shape",
+                        choice: [ { value: "yes", goalid: "6" , explanationid:"0"},
+                                  { value: "no", goalid: "6" , explanationid:"0"}],
+                        explanation: [ { content: "No, because it constantly changes."}]
+                        },
+                       {statement: "Do you think it has a specific boundary?", 
+                        activity: "Gas shape",
+                        choice: [ { value: "yes", goalid: "7" , explanationid:"0"},
+                                  { value: "no", goalid: "7" , explanationid:"0"}],
+                        explanation: [ { content: "No, the boundary also constantly changes."}]
+                        },
+                       {statement: "Fill the smoke in a bottle (transparent) and observe after a little while. Does smoke now have a shape?", 
+                        activity: "Gas shape",
+                        choice: [ { value: "yes", goalid: "8" , explanationid:"0"},
+                                  { value: "no", goalid: "8" , explanationid:"0"}],
+                        explanation: [ { content: "Yes, the whole bottle is filled with smoke, and seems to have the same shape as the bottle."}]
+                        },
+                       {statement: "Does it now have a specific boundary?", 
+                        activity: "Gas shape",
+                        choice: [ { value: "yes", goalid: "9" , explanationid:"0"},
+                                  { value: "no", goalid: "9" , explanationid:"0"}],
+                        explanation: [ { content: "Yes. Notice that when it is free smoke constantly changes its shape and boundary. But when it is in a closed container, it takes the shape and boundary of the container.",
+                                         learning: "Similarly other gases like air, steam, sprayed perfume (which vaporize as gas on your skin), gas coming out of rotten food etc. constantly change their shape and boundary."}]
+                        }
+                  ]
+               }
+             ]},
+             { statement: "Space",
+               goal: [
               {statement: "Solid has fixed volume and shape. Liquid has fixed volume. Gas expands to fill space and volume available.",
                activity: "Solids do not change with container, liquids adopt shape of container, gases fill the container."},
               {statement: "If shape is irregular, we can use indirect methods to measure.",
@@ -165,11 +213,10 @@
                activity: "Catalog different sizes of objects, their weight and volume."},
               {statement: "Float or sink can be changed by changing “effective density” of object or density of fluid.",
                activity: "Change effective density and see how things float or sink."} 
-       ]
+               ]}
+             ]
       };
       instantiatePage(jsonData);
-      display('goal.0');
-      display('goal.0.0');
     </script>
   </body>
 </html>

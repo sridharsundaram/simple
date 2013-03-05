@@ -1,0 +1,24 @@
+span.section {
+  margin: 2px;
+  height: auto;
+  width: auto;
+  text-align: center;
+  border1: 1px solid #ff0000;
+  font-size:30px;
+  color:red;
+}
+div.explanation {
+  margin:2px;
+  height:auto;
+  width:auto;
+  color:red;
+}
+div.learning {
+  margin:2px;
+  height:auto;
+  width:auto;
+  color:red;
+  background-color: #cfe7f5;
+  border: 1px solid black;
+  margin-top: 25px;
+}
