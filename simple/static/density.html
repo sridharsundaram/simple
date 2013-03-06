@@ -28,13 +28,14 @@
         }
       }
       
-      function show(id, explanationid, goalid) {
+      function show(id) {
         var p1 = id.indexOf('.');
         var p2 = id.lastIndexOf('.');
         var suffix = id.substring(p1, p2);
-        display('explanation' + suffix + '.' + explanationid);
-        display('learning' + suffix + '.' + explanationid);
+        display('explanation' + suffix);
+        display('conclusion' + suffix);
         var pmid = suffix.lastIndexOf('.');
+        var goalid = Math.round(suffix.substring(pmid + 1)) + 1;
         display('goal' + suffix.substring(0, pmid) + "." + goalid);
       }
       
@@ -58,19 +59,20 @@
     <div data-bind-id="section" style="display:none">
       <table><tr>
          <td><img src="plus.png" width=30 onclick="toggleDisplay(this)"></td>
-         <td><span class="section">{{statement}}</span></td>
+         <td><span class="section">{{header}}</span></td>
        </tr></table>
        <div id="goal" style="display:none">
+       <div class="introduction">{{introduction}}</div>
        <div template-id="goal" data-bind-id="goal" style="display:none">
           <table><tr>
-            <td><img src="plus.png" width=30 onclick="toggleDisplay(this)"></td>
-            <td><h3>{{statement}}</h3></td>
+            <td><img src="plus.png" width=20 onclick="toggleDisplay(this)"></td>
+            <td><h3>{{header}}</h3></td>
           </tr></table>
           <div id="goal" style="display:none">
           <!-- <h4>{{activity}}</h4> -->
           <div data-bind-id="subgoal">
             <div id="goal" style="display:none">
-              <h3>{{statement}}</h3>
+              <h4>{{header}}</h4>
               <table><tr>
                 <td data-bind-id="images">
                   <img xbl2:src="{{image}}" width=100>
@@ -79,27 +81,23 @@
               <table>
                 <tr>
                   <td data-bind-id="choice">
-                    <input type="button" onclick="show(this.id, '{{explanationid}}', '{{goalid}}');" value={{value}}>
+                    <input type="button" onclick="show(this.id);" value={{value}}>
                   </td>
                 </tr>
               </table>
-              <div data-bind-id="explanation" style="font-color:red">
-                <div id="explanation" class="explanation" style="display:none">{{content}}</div>
-                <div id="learning" class="learning" style="display:none">{{learning}}</div>
-              </div>
+              <div id="explanation" class="explanation" style="display:none">{{explanation}}</div>
+              <div id="conclusion" class="conclusion" style="display:none">{{conclusion}}</div>
             </div>
           </div>
           <table>
             <tr>
               <td data-bind-id="choice">
-                <input type="button" onclick="show(this, '{{explanationid}}', '{{goalid}}');" value={{value}}>
+                <input type="button" onclick="show(this.id);" value={{value}}>
               </td>
             </tr>
           </table>
-          <div data-bind-id="explanation">
-            <div id="explanation" style="color: red; display:none">{{content}}</div>
-            <div id="learning" class="learning" style="display:none">{{learning}}</div>
-          </div>
+          <div id="explanation" class="explanation" style="display:none">{{explanation}}</div>
+          <div id="conclusion" class="conclusion" style="display:none">{{conclusion}}</div>
         </div>
         </div>
       </div>
@@ -109,109 +107,111 @@
     <script type="text/javascript">
       var jsonData = {
        section:[
-           {statement:"Shapes",
+           {header:"Shapes",
             goal: [
-              {statement: "Children can have very vague notions of shape and often think that only regular geometric shapes are shapes.",
+              {objective:"Children can have very vague notions of shape and often think that only regular geometric shapes are shapes.",
+               header: "What is a Shape?",
                activity: "Let us look at and identify shapes of different things.",
                subgoal: [ 
-                       {statement: "Do you think the figures below have a shape?", 
+                       {header: "Do you think the figures below have a shape?", 
                         activity: "Regular shapes",
                         images: [{image:"circle.png"}, {image:"square.png"}, {image: "triangle.png"}],
-                        choice: [ { value: "yes", goalid: "1" , explanationid:"0"},
-                                  { value: "no", goalid: "1" , explanationid:"0"}],
-                        explanation: [ { content: "Yes, these figures have a shape. You will readily recognize these as regular geometric shapes. We define them according to some special properties of each and then name them as a circle, square and triangle etc."}]
+                        choice: [ { value: "yes"}, { value: "no"}],
+                        explanation: "You will readily recognize these as regular geometric shapes. We define them according to some special properties of each and then name them as a circle, square and triangle etc."
                         },
-                       {statement: "Do you think the figures below have a shape?", 
+                       {header: "Do you think the figures below have a shape?", 
                         activity: "Irregular shapes",
                         images: [ {image: "irregularstar.png"}, {image: "blob.png"}],
-                        choice: [ { value: "yes", goalid: "2" , explanationid:"0"},
-                                  { value: "no", goalid: "2" , explanationid:"0"}],
-                        explanation: [ { content: "Yes, these figures do have a shape. We would call these irregular shapes, because we have no clear definition that will make us fit such a shape into a category. We would say, the shape is how the figure looks like."}]
+                        choice: [ { value: "yes"}, { value: "no"}],
+                        explanation: "Yes, these figures do have a shape. We would call these irregular shapes, because we have no clear definition that will make us fit such a shape into a category. We would say, the shape is how the figure looks like."
                         },
-                       {statement: "Do you think the figures below have a shape?", 
+                       {header: "Do you think the figures below have a shape?", 
                         activity: "3D shapes",
                         images: [{image: "cube.png"}, {image: "3dshape.png"}],
-                        choice: [ { value: "yes", goalid: "1.0" , explanationid:"0"},
-                                  { value: "no", goalid: "1.0" , explanationid:"0"}],
-                        explanation: [ { content: "These are three dimensional solid shapes."}]
+                        choice: [ { value: "yes"}, { value: "no"}],
+                        explanation: "These are three dimensional solid shapes."
                         },
                  ]                        
               },
-              {statement: "The shape depends on the state, that is, whether it is a solid, liquid or gas.", 
+              {objective: "The shape depends on the state, that is, whether it is a solid, liquid or gas.",
+               header: "What does shape depend on?", 
                activity: "See example shapes of different states of matter.",
                subgoal: [
-                       {statement: "Take a stone and place it in different containers like bowl, plate, glass, box etc. Do you think stone will change its shape in each container?", 
+                       {header: "Take a stone and place it in different containers like bowl, plate, glass, box etc. Do you think stone will change its shape in each container?", 
                         activity: "Solid shape",
-                        choice: [ { value: "yes", goalid: "1" , explanationid:"0"},
-                                  { value: "no", goalid: "1" , explanationid:"0"}],
-                        explanation: [ { content: "No. <br>Clearly the stone has a definite boundary which does not change as we change the container. Similarly other solids like pencil, duster etc have a definite shape and boundary."}]
+                        choice: [ { value: "yes"}, { value: "no"}],
+                        explanation: "No. <br>Clearly the stone has a definite boundary which does not change as we change the container. Similarly other solids like pencil, duster etc have a definite shape and boundary."
                         },
-                       {statement: " In what way does the shape of a liquid differ from the shape a solid has? <br>Do the liquids in the below containers have a shape?", 
+                       {header: " In what way does the shape of a liquid differ from the shape a solid has? <br>Do the liquids in the below containers have a shape?", 
                         activity: "Liquid shape",
                         images: [ {image: "wateringlass.png"}, {image: "waterinbeaker.png"} ],
-                        choice: [ { value: "yes", goalid: "2" , explanationid:"0"},
-                                  { value: "no", goalid: "2" , explanationid:"0"}],
-                        explanation: [ { content: "Think about the boundary of water you are able to see in a glass of water. The boundary you are able to see is the shape of water."}]
+                        choice: [ { value: "yes"}, { value: "no"}],
+                        explanation: "Think about the boundary of water you are able to see in a glass of water. The boundary you are able to see is the shape of water."
                         },
-                       {statement: "Take water and pour it into glass, bowl, plate, bottle etc. Do you think shape of water will change in every container?", 
+                       {header: "Take water and pour it into glass, bowl, plate, bottle etc. Do you think shape of water will change in every container?", 
                         activity: "Liquid shape",
-                        choice: [ { value: "yes", goalid: "3" , explanationid:"0"},
-                                  { value: "no", goalid: "3" , explanationid:"0"}],
-                        explanation: [ { content: "Yes. Notice that water has a boundary which changes with the container.",
-                                         learning: "Similarly other liquids like milk, blood, oil etc takes the shape and boundary of the container, yet maintaining a definite surface too, like the top surface of water in a container that is not full. We notice that liquids do not have definite shape, but take the shape and boundary of the container."}]
+                        choice: [ { value: "yes"}, { value: "no"}],
+                        explanation: "Yes. Notice that water has a boundary which changes with the container.",
+                        conclusion: "Similarly other liquids like milk, blood, oil etc takes the shape and boundary of the container, yet maintaining a definite surface too, like the top surface of water in a container that is not full. We notice that liquids do not have definite shape, but take the shape and boundary of the container."
                         },
-                       {statement: "Let us now examine gases.<br> Does air have shape?", 
+                       {header: "Let us now examine gases.<br> Does air have shape?", 
                         activity: "Gas shape",
-                        choice: [ { value: "yes", goalid: "4" , explanationid:"0"},
-                                  { value: "no", goalid: "4" , explanationid:"0"}],
-                        explanation: [ { content: ""}]
+                        choice: [ { value: "yes"}, { value: "no"}],
+                        explanation: ""
                         },
-                       {statement: "Light an agarabatti and observe smoke rising. Do you think smoke has a shape?", 
+                       {header: "Light an agarabatti and observe smoke rising. Do you think smoke has a shape?", 
                         activity: "Gas shape",
                         images: [ {image: "incensesmoke.gif"} ],
-                        choice: [ { value: "yes", goalid: "5" , explanationid:"0"},
-                                  { value: "no", goalid: "5" , explanationid:"0"}],
-                        explanation: [ { content: "Yes, we can see the body of the smoke and its boundary too."}]
+                        choice: [ { value: "yes"}, { value: "no"}],
+                        explanation: "Yes, we can see the body of the smoke and its boundary too."
                         },
-                       {statement: "Do you think it has a definite shape?", 
+                       {header: "Do you think it has a definite shape?", 
                         activity: "Gas shape",
-                        choice: [ { value: "yes", goalid: "6" , explanationid:"0"},
-                                  { value: "no", goalid: "6" , explanationid:"0"}],
-                        explanation: [ { content: "No, because it constantly changes."}]
+                        choice: [ { value: "yes"}, { value: "no"}],
+                        explanation: "No, because it constantly changes."
                         },
-                       {statement: "Do you think it has a specific boundary?", 
+                       {header: "Do you think it has a specific boundary?", 
                         activity: "Gas shape",
-                        choice: [ { value: "yes", goalid: "7" , explanationid:"0"},
-                                  { value: "no", goalid: "7" , explanationid:"0"}],
-                        explanation: [ { content: "No, the boundary also constantly changes."}]
+                        choice: [ { value: "yes"}, { value: "no"}],
+                        explanation: "No, the boundary also constantly changes."
                         },
-                       {statement: "Fill the smoke in a bottle (transparent) and observe after a little while. Does smoke now have a shape?", 
+                       {header: "Fill the smoke in a bottle (transparent) and observe after a little while. Does smoke now have a shape?", 
                         activity: "Gas shape",
-                        choice: [ { value: "yes", goalid: "8" , explanationid:"0"},
-                                  { value: "no", goalid: "8" , explanationid:"0"}],
-                        explanation: [ { content: "Yes, the whole bottle is filled with smoke, and seems to have the same shape as the bottle."}]
+                        choice: [ { value: "yes"}, { value: "no"}],
+                        explanation: "Yes, the whole bottle is filled with smoke, and seems to have the same shape as the bottle."
                         },
-                       {statement: "Does it now have a specific boundary?", 
+                       {header: "Does it now have a specific boundary?", 
                         activity: "Gas shape",
-                        choice: [ { value: "yes", goalid: "9" , explanationid:"0"},
-                                  { value: "no", goalid: "9" , explanationid:"0"}],
-                        explanation: [ { content: "Yes. Notice that when it is free smoke constantly changes its shape and boundary. But when it is in a closed container, it takes the shape and boundary of the container.",
-                                         learning: "Similarly other gases like air, steam, sprayed perfume (which vaporize as gas on your skin), gas coming out of rotten food etc. constantly change their shape and boundary."}]
+                        choice: [ { value: "yes"}, { value: "no"}],
+                        explanation: "Yes. Notice that when it is free smoke constantly changes its shape and boundary. But when it is in a closed container, it takes the shape and boundary of the container.",
+                        conclusion: "Similarly other gases like air, steam, sprayed perfume (which vaporize as gas on your skin), gas coming out of rotten food etc. constantly change their shape and boundary."
                         }
                   ]
                }
              ]},
-             { statement: "Space",
+             { header: "Space",
+               introduction: "It is easy to establish that solids like rubber, pencil, stone, seeds etc. occupy a fixed space. If we take a fixed space like a container and try filling it with solid objects like grains, marbles etc. there is a clear limitation on the amount we can put. That is because each individual piece or grain occupies a fixed smaller space.<br><br>Similarly, liquids like water, milk etc. which take the shape of the container also occupy space, and this space is definite. You can only pour a definite amount of liquid in a given space and no more.",
                goal: [
-              {statement: "Solid has fixed volume and shape. Liquid has fixed volume. Gas expands to fill space and volume available.",
-               activity: "Solids do not change with container, liquids adopt shape of container, gases fill the container."},
-              {statement: "If shape is irregular, we can use indirect methods to measure.",
+              {objective: "Solid has fixed volume and shape. Liquid has fixed volume. Gas expands to fill space and volume available.",
+               header: "How are shape and volume related?",
+               activity: "Solids do not change with container, liquids adopt shape of container, gases fill the container.",
+               subgoal: [
+                       {header: "Do you think air occupies space?", 
+                        choice: [ { value: "yes"}, { value: "no"}],
+                        explanation: "Let us do an experiment to answer the above question."
+                        }
+               ]},
+              {objective: "If shape is irregular, we can use indirect methods to measure.",
+               header: "How can we measure volume?",
                activity: "Understand how solid volume can be measured with a liquid."},
-              {statement: "Floating or sinking depends on the object and the fluid.",
+              {objective: "Floating or sinking depends on the object and the fluid.",
+               header: "When do objects float?",
                activity: "Try floating/sinking different solids in liquids."},
-              {statement: "Density is a characteristic of the type of object. For a homogeneous object, it is uniform throughout the object.",
+              {objective: "Density is a characteristic of the type of object. For a homogeneous object, it is uniform throughout the object.",
+               header: "How can we characterize floating objects?",
                activity: "Catalog different sizes of objects, their weight and volume."},
-              {statement: "Float or sink can be changed by changing “effective density” of object or density of fluid.",
+              {objective: "Float or sink can be changed by changing “effective density” of object or density of fluid.",
+               header: "How can we make objects float?",
                activity: "Change effective density and see how things float or sink."} 
                ]}
              ]
